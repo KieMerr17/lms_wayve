@@ -1,1 +1,2 @@
 django
+dj_database_url

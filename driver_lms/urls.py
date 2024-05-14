@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-from lms.views import hello_world_view
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
-    path('', hello_world_view),
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('admin/', admin.site.urls),
 ]
 

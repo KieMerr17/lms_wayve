@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayve Driver Training</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
+</head>
+<body>
+    <!-- Background Image -->
+    <div class="background-image"></div>
+
+    <div class="login-container container">
+        <img src="/static/images/logo.jpg" class="login-logo">
+        <!-- Login form -->
+        <h4 class="login-heading">Login</h4>
+        <form id="login-form" action="#" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" id="username" name="username" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+        <div id="error-message"></div>
+    </div>
+
+    <script src="static/js/script.js"></script>
+</body>
+</html>
