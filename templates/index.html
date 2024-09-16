@@ -13,7 +13,8 @@
     <div class="background-image"></div>
 
     <div class="login-container container">
-        <img src="/static/images/logo.jpg" class="login-logo">
+        <img src="{% static 'images/logo.jpg' %}" class="login-logo" alt="Logo">
+        
         <!-- Login form -->
         <h4 class="login-heading">Login</h4>
         <form id="login-form" action="#" method="post">
@@ -31,6 +32,6 @@
         <div id="error-message"></div>
     </div>
 
-    <script src="static/js/script.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
