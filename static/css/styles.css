@@ -11,7 +11,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1; 
+    z-index: -1;
     background-image: url('/static/images/background_image.jpg');
     background-size: cover;
     background-position: center;
@@ -21,12 +21,51 @@ body {
     margin: 0 auto;
     padding: 20px;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Styles for login.html */
-.login-logo{
-    border-radius: 100px;
-    height: 170px;
+/* Flip container setup */
+.form-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 400px; 
+    perspective: 1000px; /* Enable 3D perspective */
+    height: 100%; /* Allow container to resize based on content */
+    transition: height 0.6s ease; /* Animate height changes */
+}
+
+/* Form styling for the 3D flip */
+.form {
+    width: 100%;
+    backface-visibility: hidden;  /* Ensures forms are not visible when flipped */
+    position: absolute; /* Position forms in the same spot */
+    top: 0;
+    left: 0;
+    transition: transform 0.6s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Default positions */
+.login-form {
+    transform: rotateY(0deg);  /* Initially shown */
+    opacity: 1;
+}
+
+.signup-form {
+    transform: rotateY(180deg);  /* Initially hidden */
+    opacity: 0;
+}
+
+/* When flipped, swap the transforms */
+.flipped .login-form {
+    transform: rotateY(180deg);  /* Hide login form */
+    opacity: 0;
+}
+
+.flipped .signup-form {
+    transform: rotateY(0deg);  /* Show signup form */
+    opacity: 1;
 }
 
 .login-container {
@@ -36,12 +75,21 @@ body {
     transform: translate(-50%, -50%);
     background-color: rgba(98, 98, 98, 0.8);
     border-radius: 5px;
-    min-width: 300px;
+    width: 80%;
+    max-width: 400px;
     padding: 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
     z-index: 1;
+    transition: height 0.6s ease;
+    height: auto;  /* Allow container to resize based on content */
+}
+
+/* Style adjustments for visuals */
+.login-logo {
+    border-radius: 100px;
+    height: 170px;
 }
 
 .login-heading {
@@ -61,7 +109,7 @@ body {
 }
 
 .form-input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     font-size: 16px;
     border-radius: 5px;
