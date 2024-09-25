@@ -1,12 +1,36 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Wayve Driver Training</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
 </head>
 <body>
-    <h1>Welcome to the Dashboard!</h1>
-    <p>You are logged in as {{ user.username }}</p>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-content">
+            <a href="#">{{ user.username }}</a>
+            <a href="#">QA Reports</a>
+            <a href="#">Training Docs</a>
+            <a href="#">Courses</a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div id="main-content" class="main-content">
+        <!-- Burger menu for small screens -->
+        <span class="burger-menu" id="toggle-button" onclick="toggleSidebar()">&#9776;</span>
+
+        <h1>Welcome to the Dashboard!</h1>
+        <p>You are logged in as {{ user.username }}</p>
+    </div>
+
+    <!-- Link external JS file -->
+    <script src="{% static 'js/dashboard_script.js' %}"></script>
+
 </body>
 </html>
