@@ -133,6 +133,10 @@ body {
     background-color: #0061b1;
 }
 
+#show-signup , #show-login {
+    color: white;
+}
+
 
 
 /*-----------------------------------  Sidebar Styles  -----------------------------------*/
