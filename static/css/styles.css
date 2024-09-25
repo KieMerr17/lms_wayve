@@ -166,11 +166,11 @@ body {
     color: white;
     display: block;
     transition: background-color 0.3s; /* Smooth transition for hover */
-    width: 200px;
+    width: 250px;
 }
 
 .sidebar a:hover {
-    background-color: #575757;
+    background-color: #008cff86;
 }
 
 .main-content {
@@ -193,14 +193,11 @@ body {
     padding: 15px; 
     text-decoration: none;
     color: white; 
-    background-color: #d9534f;
+    background-color: #008cff;
     text-align: center; 
     transition: background-color 0.3s;
     width: 100% !important;
-}
-
-.logout-button:hover {
-    background-color: #c9302c;
+    padding-left: 0px !important;
 }
 
 /* Responsive styles */
