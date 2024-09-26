@@ -20,7 +20,8 @@ class QAReport(models.Model):
 
     report_title = models.CharField(max_length=200) 
     date = models.DateField(auto_now_add=True)
-    report_reference = models.CharField(max_length=100, unique=True)
+    report_reference = models.CharField(max_length=100, unique=True) 
+    reference_link = models.URLField(max_length=200, blank=True, null=True) 
     result = models.CharField(max_length=5, choices=RESULT_CHOICES)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='qa_reports')  # User associated with the report
 

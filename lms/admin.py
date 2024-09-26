@@ -10,6 +10,6 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(QAReport)
 class QAReportAdmin(admin.ModelAdmin):
-    list_display = ('report_title', 'date', 'report_reference', 'result', 'user')
-    search_fields = ('report_title', 'report_reference', 'user__username')
+    list_display = ('report_title', 'date', 'report_reference', 'reference_link', 'result', 'user') 
+    search_fields = ('report_title', 'report_reference', 'reference_link', 'user__username') 
     list_filter = ('result', 'user', 'date')
