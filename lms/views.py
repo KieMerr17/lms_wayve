@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def login_view(request):
     if request.method == 'POST':
@@ -12,11 +13,11 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            return redirect('dashboard')  # Redirect to dashboard after login
         else:
             messages.error(request, 'Incorrect username or password')
     
-    return render(request, 'index.html')
+    return render(request, 'index.html')  # Render login page on GET or failed login
 
 def signup_view(request):
     if request.method == 'POST':
@@ -27,14 +28,19 @@ def signup_view(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             if user is not None:
-                login(request, user)
+                login(request, user)  # Auto login the user after signup
                 return redirect('dashboard')
         else:
             messages.error(request, 'Error creating account. Please check the details.')
     
-    return render(request, 'index.html', {'form': UserCreationForm()})
+    return render(request, 'index.html', {'form': UserCreationForm()})  # Display signup form
 
+@login_required
 def dashboard_view(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    return render(request, 'dashboard.html')
+    # Only authenticated users should see this page
+    return render(request, 'dashboard.html')  # Render the main dashboard page
+
+@login_required
+def qa_reports_view(request):
+    # Render the QA reports page, only accessible for logged-in users
+    return render(request, 'qa_reports.html')

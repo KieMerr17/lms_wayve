@@ -13,8 +13,8 @@
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <div class="sidebar-content">
-            <a href="#">{{ user.username }}</a>
-            <a href="#">QA Reports</a>
+            <a href="{% url 'dashboard' %}">{{ user.username }}</a>
+            <a href="{% url 'qa_reports' %}">QA Reports</a>
             <a href="#">Training Docs</a>
             <a href="#">Courses</a>
         </div>
@@ -23,11 +23,13 @@
 
     <!-- Main content -->
     <div id="main-content" class="main-content">
-        <!-- Burger menu for small screens -->
         <span class="burger-menu" id="toggle-button" onclick="toggleSidebar()">&#9776;</span>
 
+        {% block content %}
+        <!-- Default content (dashboard) -->
         <h1>Welcome to the Dashboard!</h1>
         <p>You are logged in as {{ user.username }}</p>
+        {% endblock %}
     </div>
 
     <!-- Link external JS file -->
