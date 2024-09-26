@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import QAReport
 
 def login_view(request):
     if request.method == 'POST':
@@ -37,10 +38,15 @@ def signup_view(request):
 
 @login_required
 def dashboard_view(request):
-    # Only authenticated users should see this page
+    """Render the main dashboard page for authenticated users."""
     return render(request, 'dashboard.html')  # Render the main dashboard page
 
 @login_required
 def qa_reports_view(request):
-    # Render the QA reports page, only accessible for logged-in users
-    return render(request, 'qa_reports.html')
+    # Fetch QA reports related to the logged-in user
+    qa_reports = request.user.qa_reports.all()
+
+    context = {
+        'qa_reports': qa_reports,
+    }
+    return render(request, 'qa_reports.html', context)

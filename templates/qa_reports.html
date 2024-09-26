@@ -2,5 +2,30 @@
 
 {% block content %}
     <h1>QA Reports</h1>
-    <p>Here you can view and manage all QA Reports.</p>
+    <p>Here you can view all QA Reports.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Report Title</th>
+                <th>Date</th>
+                <th>Reference</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in qa_reports %}
+                <tr>
+                    <td>{{ report.report_title }}</td>
+                    <td>{{ report.date }}</td>
+                    <td>{{ report.report_reference }}</td>
+                    <td>{{ report.result }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No reports available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
