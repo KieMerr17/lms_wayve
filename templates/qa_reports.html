@@ -1,31 +1,82 @@
 {% extends 'dashboard.html' %}
+{% load static %}
 
 {% block content %}
     <h1>QA Reports</h1>
     <p>Here you can view all QA Reports.</p>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Report Title</th>
-                <th>Date</th>
-                <th>Reference</th>
-                <th>Result</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for report in qa_reports %}
+    <div class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ report.report_title }}</td>
-                    <td>{{ report.date }}</td>
-                    <td>{{ report.report_reference }}</td>
-                    <td>{{ report.result }}</td>
+                    <th>Report Title</th>
+                    <th>Date</th>
+                    <th>Reference</th>
+                    <th>Result</th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="4">No reports available.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for report in qa_reports %}
+                    <tr>
+                        <td>{{ report.report_title }}</td>
+                        <td>{{ report.date }}</td>
+                        <td>{{ report.report_reference }}</td>
+                        <td>{{ report.result }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No reports available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>History of Results</h2>
+    <canvas id="resultsChart" width="400" height="200"></canvas>
+
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Link to the external JavaScript file -->
+    <script src="{% static 'js/dashboard_script.js' %}"></script>
+
+    <script>
+        // Prepare data for the chart
+        const results = {
+            labels: ['Red', 'Amber', 'Green'],
+            datasets: [{
+                label: 'Number of Reports',
+                data: [
+                    {{ result_counts.Red }},
+                    {{ result_counts.Amber }},
+                    {{ result_counts.Green }},
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const ctx = document.getElementById('resultsChart').getContext('2d');
+        const resultsChart = new Chart(ctx, {
+            type: 'bar',
+            data: results,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
 {% endblock %}

@@ -1,3 +1,4 @@
+// Function to toggle the sidebar
 function toggleSidebar() {
     var sidebar = document.getElementById("sidebar");
     var content = document.getElementById("main-content");
