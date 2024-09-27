@@ -18,7 +18,7 @@
             <tbody>
                 {% for report in qa_reports %}
                     <tr>
-                        <td onclick="openModal('{{ report.reference_link|default:'#' }}', '{{ report.report_title|escapejs }}')">
+                        <td onclick="openModal('{{ report.reference_link|default:'https://google.com'}}', '{{ report.report_title|escapejs }}')">
                             {{ report.report_title }}
                         </td>
                         <td>{{ report.date }}</td>
@@ -43,80 +43,4 @@
         </div>
     </div>
 
-    <style>
-        /* Modal Styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 50px auto; /* Center the modal */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Width of the modal */
-            height: 80%; /* Set maximum height to 70% of the viewport */
-            overflow: hidden; /* Hide overflow */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5); /* Added shadow for better visibility */
-            border-radius: 8px; /* Rounded corners */
-            position: relative; /* Allow absolute positioning inside */
-        }
-        .modal-content h2 {
-            margin: 0 0 10px; /* Spacing for title */
-        }
-        #modal-iframe {
-            height: calc(70vh - 50px); /* Height of iframe - title & padding */
-            width: 100%; /* Full width */
-            border: none; /* Remove border */
-            overflow: auto; /* Enable scrolling */
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-
-    <script>
-        // Function to open the modal
-        function openModal(reportUrl, reportTitle) {
-            const modal = document.getElementById("modal");
-            const modalTitle = document.getElementById("modal-title");
-            const modalIframe = document.getElementById("modal-iframe");
-            
-            modalTitle.innerText = `Live Preview: ${reportTitle}`; // Set the title of the modal
-            modalIframe.src = reportUrl; // Set the src of the iframe to the report URL
-            modal.style.display = "block"; // Show the modal
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            const modal = document.getElementById("modal");
-            const modalIframe = document.getElementById("modal-iframe");
-            modal.style.display = "none"; // Hide the modal
-            modalIframe.src = ""; // Clear the iframe source to stop loading the page
-        }
-
-        // Close the modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById("modal");
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-    </script>
 {% endblock %}

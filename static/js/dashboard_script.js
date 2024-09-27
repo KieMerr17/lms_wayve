@@ -39,3 +39,29 @@ window.addEventListener("resize", function() {
     }
 });
 
+// Function to open the report modal
+function openModal(reportUrl, reportTitle) {
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modal-title");
+    const modalIframe = document.getElementById("modal-iframe");
+    
+    modalTitle.innerText = `Live Preview: ${reportTitle}`; // Set the title of the modal
+    modalIframe.src = reportUrl; // Set the src of the iframe to the report URL
+    modal.style.display = "block"; // Show the modal
+}
+
+// Function to close the modal
+function closeModal() {
+    const modal = document.getElementById("modal");
+    const modalIframe = document.getElementById("modal-iframe");
+    modal.style.display = "none"; 
+    modalIframe.src = ""; 
+}
+
+// Close the modal when clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById("modal");
+    if (event.target === modal) {
+        closeModal();
+    }
+}
