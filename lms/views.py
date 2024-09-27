@@ -3,22 +3,21 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import QAReport
+from .models import QAReport, Course, Certificate
 
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
-        # Check the credentials
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')  # Redirect to dashboard after login
+            return redirect('dashboard')
         else:
             messages.error(request, 'Incorrect username or password')
     
-    return render(request, 'index.html')  # Render login page on GET or failed login
+    return render(request, 'index.html')
 
 def signup_view(request):
     if request.method == 'POST':
@@ -29,17 +28,24 @@ def signup_view(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             if user is not None:
-                login(request, user)  # Auto login the user after signup
+                login(request, user)
                 return redirect('dashboard')
         else:
             messages.error(request, 'Error creating account. Please check the details.')
     
-    return render(request, 'index.html', {'form': UserCreationForm()})  # Display signup form
+    return render(request, 'index.html', {'form': UserCreationForm()})
 
 @login_required
 def dashboard_view(request):
-    """Render the main dashboard page for authenticated users."""
-    return render(request, 'dashboard.html')  # Render the main dashboard page
+    # Fetch courses the user is enrolled in and their certificates
+    enrolled_courses = request.user.enrolled_courses.all()
+    certificates = request.user.certificates.all()
+
+    context = {
+        'enrolled_courses': enrolled_courses,
+        'certificates': certificates,
+    }
+    return render(request, 'dashboard.html', context)
 
 @login_required
 def qa_reports_view(request):

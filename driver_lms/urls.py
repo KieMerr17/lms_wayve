@@ -8,4 +8,7 @@ urlpatterns = [
     path('dashboard/', dashboard_view, name='dashboard'),
     path('signup/', signup_view, name='signup'),
     path('admin/', admin.site.urls),
+    # path('courses/', course_list_view, name='course_list'),
+    # path('courses/<int:course_id>/', course_detail_view, name='course_detail'),
+    # path('certificates/', certificate_list_view, name='certificate_list'),
 ]
