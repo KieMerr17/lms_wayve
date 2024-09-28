@@ -22,17 +22,13 @@
                 <tbody>
                     {% for record in records %}
                         <tr>
-                            <td onclick="openModal('{% if record.supporting_document %}{{ record.supporting_document.url }}{% elif record.supporting_document_url %}{{ record.supporting_document_url }}{% else %}javascript:void(0){% endif %}', '{{ record.training_title|escapejs }}')">
+                            <td onclick="openModal('{{ record.supporting_document_url|default:'javascript:void(0)' }}', '{{ record.training_title|escapejs }}', 'url')">
                                 {{ record.training_title }}
                             </td>
                             <td>{{ record.date }}</td>
                             <td>{{ record.status }}</td>
                             <td>
-                                {% if record.supporting_document %}
-                                    <a href="javascript:void(0)" onclick="openModal('{{ record.supporting_document.url }}', '{{ record.training_title|escapejs }}', 'document')">
-                                        View File
-                                    </a>
-                                {% elif record.supporting_document_url %}
+                                {% if record.supporting_document_url %}
                                     <a href="javascript:void(0)" onclick="openModal('{{ record.supporting_document_url }}', '{{ record.training_title|escapejs }}', 'url')">
                                         View File
                                     </a>
@@ -66,4 +62,3 @@
     </div>
 
 {% endblock %}
-

@@ -1,6 +1,4 @@
 from django.contrib import admin
-from django.conf.urls.static import static
-from django.conf import settings
 from django.urls import path
 from lms.views import login_view, signup_view, dashboard_view, qa_reports_view, training_records_view
 
@@ -12,6 +10,3 @@ urlpatterns = [
     path('signup/', signup_view, name='signup'),
     path('admin/', admin.site.urls),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

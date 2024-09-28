@@ -79,8 +79,7 @@ class TrainingRecord(models.Model):
     date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     
-    # Support either a file or a URL for the supporting document
-    supporting_document = models.FileField(upload_to='training_documents/', blank=True, null=True)
+    # Remove the supporting_document field
     supporting_document_url = models.URLField(max_length=500, blank=True, null=True)
 
     notes = models.TextField(blank=True, null=True)
@@ -90,12 +89,10 @@ class TrainingRecord(models.Model):
 
     def clean(self):
         """
-        Ensure that either a file or a URL is provided, but not both.
+        Ensure that a URL is provided.
         """
-        if self.supporting_document and self.supporting_document_url:
-            raise ValidationError("You can either upload a document or provide a URL, but not both.")
-        if not self.supporting_document and not self.supporting_document_url:
-            raise ValidationError("You must provide either a document or a URL.")
+        if not self.supporting_document_url:
+            raise ValidationError("You must provide a URL for the supporting document.")
 
     @staticmethod
     def get_training_records(user):
