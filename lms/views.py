@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import QAReport, Course, Certificate
+from .models import QAReport
 
 def login_view(request):
     if request.method == 'POST':
@@ -37,15 +37,7 @@ def signup_view(request):
 
 @login_required
 def dashboard_view(request):
-    # Fetch courses the user is enrolled in and their certificates
-    enrolled_courses = request.user.enrolled_courses.all()
-    certificates = request.user.certificates.all()
-
-    context = {
-        'enrolled_courses': enrolled_courses,
-        'certificates': certificates,
-    }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'dashboard.html')
 
 @login_required
 def qa_reports_view(request):

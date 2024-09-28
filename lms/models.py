@@ -28,32 +28,6 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.role}"
 
-# Course model
-class Course(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    
-    # Many-to-Many relationship for courses enrolled by users
-    enrolled_users = models.ManyToManyField(User, related_name='enrolled_courses', blank=True)
-    
-    # To track certificates associated with a course
-    certificates = models.ManyToManyField(User, related_name='certificates', blank=True, through='Certificate')
-
-    def __str__(self):
-        return self.title
-
-# Certificate model (for course completion)
-class Certificate(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    issue_date = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.course.title} Certificate"
-
 # QA Report model
 class QAReport(models.Model):
     RESULT_CHOICES = [
