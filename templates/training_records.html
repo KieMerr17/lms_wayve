@@ -22,7 +22,9 @@
                 <tbody>
                     {% for record in records %}
                         <tr>
-                            <td>{{ record.training_title }}</td>
+                            <td onclick="openModal('{% if record.supporting_document %}{{ record.supporting_document.url }}{% elif record.supporting_document_url %}{{ record.supporting_document_url }}{% else %}javascript:void(0){% endif %}', '{{ record.training_title|escapejs }}')">
+                                {{ record.training_title }}
+                            </td>
                             <td>{{ record.date }}</td>
                             <td>{{ record.status }}</td>
                             <td>
@@ -63,47 +65,5 @@
         </div>
     </div>
 
-    <script>
-        // Function to open the modal and display either the document or URL in an iframe
-        function openModal(contentUrl, contentTitle, contentType) {
-            const modal = document.getElementById("modal");
-            const modalTitle = document.getElementById("modal-title");
-            const modalIframe = document.getElementById("modal-iframe");
-
-            // Set the title of the modal
-            modalTitle.innerText = contentTitle;
-
-            // Reset the iframe source before loading new content
-            modalIframe.src = "";
-
-            // If the content type is 'url', open the link in the modal iframe
-            if (contentType === 'url') {
-                modalIframe.src = contentUrl;
-            } else {
-                // Handle document logic (e.g., PDF preview)
-                modalIframe.src = contentUrl;
-            }
-
-            // Display the modal
-            modal.style.display = "flex";
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            const modal = document.getElementById("modal");
-            const modalIframe = document.getElementById("modal-iframe");
-
-            // Hide the modal and clear the iframe content
-            modal.style.display = "none";
-            modalIframe.src = ""; // Clear the iframe source
-        }
-
-        // Optional: Close the modal if the user clicks outside of the modal content
-        window.onclick = function(event) {
-            const modal = document.getElementById("modal");
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-    </script>
 {% endblock %}
+
