@@ -23,11 +23,21 @@ class QAReportAdmin(admin.ModelAdmin):
     search_fields = ('report_title', 'report_reference', 'reference_link', 'user__username')
     list_filter = ('result', 'user', 'date')
 
-# Register TrainingRecord model
+# Customizing the TrainingRecord admin to display both file and URL options
 @admin.register(TrainingRecord)
 class TrainingRecordAdmin(admin.ModelAdmin):
-    list_display = ('training_title', 'training_type', 'date', 'status', 'user')
+    list_display = ('training_title', 'training_type', 'date', 'status', 'get_document', 'user')
     search_fields = ('training_title', 'user__username')
     list_filter = ('training_type', 'status', 'date', 'user')
     date_hierarchy = 'date'
     list_per_page = 20
+
+    # Custom method to show either the URL or file in the admin panel
+    def get_document(self, obj):
+        if obj.supporting_document_url:
+            return f"URL: {obj.supporting_document_url}"
+        elif obj.supporting_document:
+            return f"File: {obj.supporting_document.name}"
+        else:
+            return "No document"
+    get_document.short_description = 'Document'

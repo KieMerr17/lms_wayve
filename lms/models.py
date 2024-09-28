@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 
@@ -77,12 +78,28 @@ class TrainingRecord(models.Model):
     training_type = models.CharField(max_length=20, choices=TRAINING_TYPE_CHOICES)
     date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    
+    # Support either a file or a URL for the supporting document
     supporting_document = models.FileField(upload_to='training_documents/', blank=True, null=True)
+    supporting_document_url = models.URLField(max_length=500, blank=True, null=True)
+
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.training_title} - {self.user.username} - {self.status}"
 
+    def clean(self):
+        """
+        Ensure that either a file or a URL is provided, but not both.
+        """
+        if self.supporting_document and self.supporting_document_url:
+            raise ValidationError("You can either upload a document or provide a URL, but not both.")
+        if not self.supporting_document and not self.supporting_document_url:
+            raise ValidationError("You must provide either a document or a URL.")
+
     @staticmethod
     def get_training_records(user):
+        """
+        Fetches and returns all training records for the specified user, ordered by the latest date first.
+        """
         return TrainingRecord.objects.filter(user=user).order_by('-date')

@@ -16,7 +16,7 @@
                         <th>Training Title</th>
                         <th>Date</th>
                         <th>Status</th>
-                        <th>Document</th>
+                        <th>Report</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,8 +27,12 @@
                             <td>{{ record.status }}</td>
                             <td>
                                 {% if record.supporting_document %}
-                                    <a href="javascript:void(0)" onclick="openModal('{{ record.supporting_document.url }}', '{{ record.training_title|escapejs }}')">
-                                        View Document
+                                    <a href="javascript:void(0)" onclick="openModal('{{ record.supporting_document.url }}', '{{ record.training_title|escapejs }}', 'document')">
+                                        View File
+                                    </a>
+                                {% elif record.supporting_document_url %}
+                                    <a href="javascript:void(0)" onclick="openModal('{{ record.supporting_document_url }}', '{{ record.training_title|escapejs }}', 'url')">
+                                        View File
                                     </a>
                                 {% else %}
                                     No document
@@ -50,35 +54,54 @@
     {% endif %}
 
     <!-- Modal Structure -->
-    <div id="modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+    <div id="modal" class="modal" style="display: none; justify-content: center; align-items: center;">
+        <div class="modal-content" style="position: relative; width: 80%; height: 80%;">
+            <span class="close" onclick="closeModal()" style="cursor: pointer; position: absolute; top: 10px; right: 20px;">&times;</span>
             <h2 id="modal-title"></h2>
-            <!-- Using an object tag to display the document -->
-            <object id="modal-object" type="application/pdf" data="" style="width: 100%; height: 600px;">
-                Your browser does not support PDFs. <a href="#">Download the PDF</a>
-            </object>
+            <!-- PDF or URL Preview -->
+            <iframe id="modal-iframe" style="width: 100%; height: 100%; border: none;"></iframe>
         </div>
     </div>
 
     <script>
-        // Function to open the modal with the document and title
-        function openModal(documentUrl, documentTitle) {
-            document.getElementById('modal-title').innerText = documentTitle;
-            document.getElementById('modal-object').data = documentUrl;  // Set the file to load in the object tag
-            document.getElementById('modal').style.display = 'block';
+        // Function to open the modal and display either the document or URL in an iframe
+        function openModal(contentUrl, contentTitle, contentType) {
+            const modal = document.getElementById("modal");
+            const modalTitle = document.getElementById("modal-title");
+            const modalIframe = document.getElementById("modal-iframe");
+
+            // Set the title of the modal
+            modalTitle.innerText = contentTitle;
+
+            // Reset the iframe source before loading new content
+            modalIframe.src = "";
+
+            // If the content type is 'url', open the link in the modal iframe
+            if (contentType === 'url') {
+                modalIframe.src = contentUrl;
+            } else {
+                // Handle document logic (e.g., PDF preview)
+                modalIframe.src = contentUrl;
+            }
+
+            // Display the modal
+            modal.style.display = "flex";
         }
 
         // Function to close the modal
         function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-            document.getElementById('modal-object').data = '';  // Clear the object data when closing the modal
+            const modal = document.getElementById("modal");
+            const modalIframe = document.getElementById("modal-iframe");
+
+            // Hide the modal and clear the iframe content
+            modal.style.display = "none";
+            modalIframe.src = ""; // Clear the iframe source
         }
 
-        // Optional: Close modal if user clicks outside of the modal content
+        // Optional: Close the modal if the user clicks outside of the modal content
         window.onclick = function(event) {
-            var modal = document.getElementById('modal');
-            if (event.target == modal) {
+            const modal = document.getElementById("modal");
+            if (event.target === modal) {
                 closeModal();
             }
         }
