@@ -28,7 +28,7 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.role}"
 
-# QA Report model
+
 class QAReport(models.Model):
     RESULT_CHOICES = [
         ('Red', 'Red'),
@@ -46,7 +46,6 @@ class QAReport(models.Model):
     def __str__(self):
         return f"{self.report_title} - {self.user.username}"
     
-    # Method to filter previous, latest, and upcoming reports
     @staticmethod
     def get_reports(user):
         today = timezone.now().date()
@@ -59,3 +58,31 @@ class QAReport(models.Model):
             'latest': latest_report,
             'upcoming': upcoming_reports,
         }
+
+
+class TrainingRecord(models.Model):
+    TRAINING_TYPE_CHOICES = [
+        ('Initial', 'Initial'),
+        ('Refresher', 'Refresher'),
+        ('Advanced', 'Advanced'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('Completed', 'Completed'),
+        ('Pending', 'Pending'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='training_records')
+    training_title = models.CharField(max_length=200)
+    training_type = models.CharField(max_length=20, choices=TRAINING_TYPE_CHOICES)
+    date = models.DateField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    supporting_document = models.FileField(upload_to='training_documents/', blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.training_title} - {self.user.username} - {self.status}"
+
+    @staticmethod
+    def get_training_records(user):
+        return TrainingRecord.objects.filter(user=user).order_by('-date')

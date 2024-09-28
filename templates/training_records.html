@@ -1,0 +1,86 @@
+{% extends 'dashboard.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Training Records</h1>
+    <p>Here you can view all of your training records, grouped by type.</p>
+
+    <!-- Grouped by training type -->
+    {% for training_type, records in training_records.items %}
+        <h2>{{ training_type }} Training</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Training Title</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Document</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <td>{{ record.training_title }}</td>
+                            <td>{{ record.date }}</td>
+                            <td>{{ record.status }}</td>
+                            <td>
+                                {% if record.supporting_document %}
+                                    <a href="javascript:void(0)" onclick="openModal('{{ record.supporting_document.url }}', '{{ record.training_title|escapejs }}')">
+                                        View Document
+                                    </a>
+                                {% else %}
+                                    No document
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No records available for {{ training_type }} training.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+    
+    {% if training_records|length == 0 %}
+        <p>No training records found.</p>
+    {% endif %}
+
+    <!-- Modal Structure -->
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <!-- Using an object tag to display the document -->
+            <object id="modal-object" type="application/pdf" data="" style="width: 100%; height: 600px;">
+                Your browser does not support PDFs. <a href="#">Download the PDF</a>
+            </object>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the modal with the document and title
+        function openModal(documentUrl, documentTitle) {
+            document.getElementById('modal-title').innerText = documentTitle;
+            document.getElementById('modal-object').data = documentUrl;  // Set the file to load in the object tag
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal-object').data = '';  // Clear the object data when closing the modal
+        }
+
+        // Optional: Close modal if user clicks outside of the modal content
+        window.onclick = function(event) {
+            var modal = document.getElementById('modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+{% endblock %}

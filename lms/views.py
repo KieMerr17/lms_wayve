@@ -1,9 +1,10 @@
+from collections import defaultdict
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import QAReport
+from .models import QAReport, TrainingRecord
 
 def login_view(request):
     if request.method == 'POST':
@@ -48,3 +49,19 @@ def qa_reports_view(request):
         'qa_reports': qa_reports,
     }
     return render(request, 'qa_reports.html', context)
+
+@login_required
+def training_records_view(request):
+    # Fetch all training records related to the logged-in user
+    training_records = TrainingRecord.objects.filter(user=request.user).order_by('-date')
+
+    # Group the records by 'training_type'
+    grouped_records = defaultdict(list)
+    for record in training_records:
+        grouped_records[record.training_type].append(record)
+
+    # Pass the grouped records to the template
+    context = {
+        'training_records': dict(grouped_records),  # Convert defaultdict to a regular dict
+    }
+    return render(request, 'training_records.html', context)

@@ -113,6 +113,11 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Media files (uploaded by users)
+MEDIA_URL = '/media/'  # URL to access media files (e.g. in templates)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Path where media files are stored
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

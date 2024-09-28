@@ -33,14 +33,14 @@ window.addEventListener("resize", function() {
     }
 });
 
-// Function to open the report modal
-function openModal(reportUrl, reportTitle) {
+// Function to open the modal with the document and title
+function openModal(documentUrl, documentTitle) {
     const modal = document.getElementById("modal");
     const modalTitle = document.getElementById("modal-title");
     const modalIframe = document.getElementById("modal-iframe");
     
-    modalTitle.innerText = `Live Preview: ${reportTitle}`; // Set the title of the modal
-    modalIframe.src = reportUrl; // Set the src of the iframe to the report URL
+    modalTitle.innerText = documentTitle; // Set the title of the modal
+    modalIframe.src = documentUrl; // Set the src of the iframe to the document URL
     modal.style.display = "flex"; // Show the modal using flex for centering
 }
 
@@ -48,6 +48,7 @@ function openModal(reportUrl, reportTitle) {
 function closeModal() {
     const modal = document.getElementById("modal");
     const modalIframe = document.getElementById("modal-iframe");
+    
     modal.style.display = "none"; 
     modalIframe.src = ""; // Clear the iframe source
 }
@@ -58,7 +59,7 @@ window.onclick = function(event) {
     if (event.target === modal) {
         closeModal();
     }
-}
+};
 
 // Close the sidebar when clicking outside of it
 window.addEventListener('click', function(event) {
