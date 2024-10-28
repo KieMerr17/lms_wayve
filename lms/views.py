@@ -38,13 +38,7 @@ def signup_view(request):
 
 @login_required
 def dashboard_view(request):
-    profile = request.user.profile
-    team_members = profile.get_team() if profile.role == 'QA' else None  # Get team members if the role is QA
-
-    context = {
-        'team_members': team_members,
-    }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'dashboard.html')
 
 @login_required
 def qa_reports_view(request):

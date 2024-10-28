@@ -26,44 +26,27 @@
         <span class="burger-menu" id="toggle-button" onclick="toggleSidebar()">&#9776;</span>
 
         {% block content %}
-            <!-- Dashboard Welcome Section -->
-            <div class="dashboard-header">
-                <h1>Welcome to the Dashboard, {{ user.username }}!</h1>
-                <p>You are logged in as <strong>{{ user.username }}</strong></p>
+        <!-- Dashboard Welcome Section -->
+        <div class="dashboard-header">
+            <h1>Welcome to the Dashboard, {{ user.username }}!</h1>
+            <p>You are logged in as <strong>{{ user.username }}</strong></p>
+        </div>
+    
+        <!-- User Information Section -->
+        <div class="user-info">
+            <h2>User Information</h2>
+            <div class="info-card">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Employee Number:</strong> {{ user.profile.employee_number }}</p>
+                <p><strong>Role:</strong> {{ user.profile.get_role_display }}</p>
+                <p><strong>Status:</strong> {{ user.profile.get_status_display }}</p>
+                <p><strong>Initial Training Records:</strong> {{ user.profile.initial_training_records }}</p>
+                <p><strong>Investigations:</strong> {{ user.profile.investigations }}</p>
+                <p><strong>PCN Charges:</strong> £{{ user.profile.pcn_charges }}</p>
             </div>
-
-            <!-- User Information Section -->
-            <div class="user-info">
-                <h2>User Information</h2>
-                <div class="info-card">
-                    <p><strong>Username:</strong> {{ user.username }}</p>
-                    <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Employee Number:</strong> {{ user.profile.employee_number }}</p>
-                    <p><strong>Role:</strong> {{ user.profile.get_role_display }}</p>
-                    <p><strong>Status:</strong> {{ user.profile.get_status_display }}</p>
-                    <p><strong>Initial Training Records:</strong> {{ user.profile.initial_training_records }}</p>
-                    <p><strong>Investigations:</strong> {{ user.profile.investigations }}</p>
-                    <p><strong>PCN Charges:</strong> £{{ user.profile.pcn_charges }}</p>
-                </div>
-            </div>
-
-            <!-- Team Members Section (for QA role) -->
-            {% if team_members %}
-                <div class="team-members">
-                    <h2>My Team Members</h2>
-                    <ul>
-                        {% for member in team_members %}
-                            <li>
-                                <strong>{{ member.user.username }}</strong> - {{ member.get_role_display }}
-                            </li>
-                        {% empty %}
-                            <p>No team members assigned.</p>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+        </div>
         {% endblock %}
-
     </div>
 
 </body>
