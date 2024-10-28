@@ -45,7 +45,7 @@ ROOT_URLCONF = 'driver_lms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/kieranmerrett/lms_wayve/templates'],
+        'DIRS': ['/Users/kieranmerrett/Desktop/lms_wayve/lms_wayve/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

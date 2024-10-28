@@ -8,6 +8,7 @@ class Profile(models.Model):
     ROLE_CHOICES = [
         ('VSO', 'VSO'),
         ('Trainer', 'Trainer'),
+        ('QA', 'QA'),
         ('Admin', 'Admin'),
     ]
     
@@ -20,7 +21,8 @@ class Profile(models.Model):
     employee_number = models.CharField(max_length=20, unique=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    
+    team_members = models.ManyToManyField("self", blank=True, symmetrical=False, related_name="qa_team")
+
     # Additional fields for managing other information
     initial_training_records = models.TextField(blank=True)
     investigations = models.TextField(blank=True) 
@@ -28,6 +30,22 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.role}"
+
+    def get_team(self):
+        """
+        Return the team members for a QA user. If the role is not QA, it should return None or an empty QuerySet.
+        """
+        if self.role == 'QA':
+            return self.team_members.all()
+        return None
+
+    def get_qa(self):
+        """
+        For a VSO user, return the assigned QA. If the role is not VSO, return None.
+        """
+        if self.role == 'VSO':
+            return self.qa_team.first()  # assuming a VSO will have only one QA assigned
+        return None
 
 
 class QAReport(models.Model):
@@ -78,25 +96,16 @@ class TrainingRecord(models.Model):
     training_type = models.CharField(max_length=20, choices=TRAINING_TYPE_CHOICES)
     date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    
-    # Remove the supporting_document field
     supporting_document_url = models.URLField(max_length=500, blank=True, null=True)
-
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.training_title} - {self.user.username} - {self.status}"
 
     def clean(self):
-        """
-        Ensure that a URL is provided.
-        """
         if not self.supporting_document_url:
             raise ValidationError("You must provide a URL for the supporting document.")
 
     @staticmethod
     def get_training_records(user):
-        """
-        Fetches and returns all training records for the specified user, ordered by the latest date first.
-        """
         return TrainingRecord.objects.filter(user=user).order_by('-date')
